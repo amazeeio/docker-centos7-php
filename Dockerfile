@@ -37,18 +37,13 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
 
 ADD fix-permissions /bin/fix-permissions
 
-RUN fix-permissions /run/php-fpm
-
-RUN mkdir -p /usr/share/nginx/html/
-RUN echo "<?php phpinfo();" > /usr/share/nginx/html/hello.php
-
-# DATA VOLUMES
-RUN mkdir -p /data/nginx/www
-VOLUME ["/data/nginx/www"]
+RUN mkdir -p /app && \
+    fix-permissions /run/php-fpm  && \
+    fix-permissions /app 
 
 # PORTS
 # Port 9000 is how Nginx will communicate with PHP-FPM.
 EXPOSE 9000
 
 # Run PHP-FPM on container start.
-ENTRYPOINT ["/usr/sbin/php-fpm", "-F"]
+CMD ["/usr/sbin/php-fpm", "-F"]
