@@ -20,7 +20,9 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
         php-imap \
         php-soap \
         php-mbstring \
-        php-pdo
+        php-pdo \
+        unzip && \
+    yum clean all 
 
 # Configure and secure PHP
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
@@ -32,6 +34,7 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
     sed -i '/^listen.allowed_clients/c;listen.allowed_clients =' /etc/php-fpm.d/www.conf && \
     sed -i "s/;access.log = .*/access.log = \/proc\/self\/fd\/2/" /etc/php-fpm.d/www.conf && \
     sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php-fpm.d/www.conf && \
+    sed -i "s/;clear_env = .*/clear_env = no/" /etc/php-fpm.d/www.conf && \    
     sed -i "s/php_admin_flag\[log_errors\] = .*/;php_admin_flag[log_errors] =/" /etc/php-fpm.d/www.conf && \
     sed -i "s/php_admin_value\[error_log\] =.*/;php_admin_value[error_log] = /" /etc/php-fpm.d/www.conf 
 
@@ -55,8 +58,7 @@ RUN php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filenam
 ADD fix-permissions /bin/fix-permissions
 
 RUN mkdir -p /app && \
-    fix-permissions /run/php-fpm  && \
-    fix-permissions /app 
+    fix-permissions '/run/php-fpm /app /var/lib/php/session/'
 
 # PORTS
 # Port 9000 is how Nginx will communicate with PHP-FPM.
