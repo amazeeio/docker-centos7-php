@@ -36,7 +36,8 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
     sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php-fpm.d/www.conf && \
     sed -i "s/;clear_env = .*/clear_env = no/" /etc/php-fpm.d/www.conf && \    
     sed -i "s/php_admin_flag\[log_errors\] = .*/;php_admin_flag[log_errors] =/" /etc/php-fpm.d/www.conf && \
-    sed -i "s/php_admin_value\[error_log\] =.*/;php_admin_value[error_log] = /" /etc/php-fpm.d/www.conf 
+    sed -i "s/php_admin_value\[error_log\] =.*/;php_admin_value[error_log] = /" /etc/php-fpm.d/www.conf && \
+    sed -i '/^pm = /cpm = ondemand' /etc/php-fpm.d/www.conf
 
 # Register the COMPOSER_HOME environment variable
 ENV COMPOSER_HOME /composer
