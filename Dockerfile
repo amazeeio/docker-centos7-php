@@ -1,4 +1,4 @@
-FROM centos:centos7
+FROM amazeeio/centos:7
 
 MAINTAINER amazee.io
 
@@ -43,8 +43,6 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer &&  \
     php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }"
 
 RUN COMPOSER_ALLOW_SUPERUSER=1 php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer && rm -rf /tmp/composer-setup.php
-
-ADD fix-permissions /bin/fix-permissions
 
 RUN mkdir -p /app && \
     fix-permissions '/run/php-fpm /app /var/lib/php/session/'
