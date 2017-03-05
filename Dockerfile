@@ -36,8 +36,7 @@ RUN yum install -y epel-release \
 
 COPY container-entrypoint /usr/sbin/container-entrypoint
 
-COPY php-fpm.conf php.ini /etc/
-COPY php/www.conf /etc/php-fpm.d/www.conf
+RUN php -r "echo ini_get('memory_limit').PHP_EOL;"
 
 # Setup the Composer installer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer &&  \
@@ -46,7 +45,15 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer &&  \
 
 RUN COMPOSER_ALLOW_SUPERUSER=1 php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer && rm -rf /tmp/composer-setup.php
 
+
+COPY php-fpm.conf php.ini /etc/
+COPY php-fpm.d/www.conf /etc/php-fpm.d/www.conf
+
+
 RUN mkdir -p /app && \
+    fix-permissions /etc/php.ini && \
+    fix-permissions /etc/php-fpm.conf && \
+    fix-permissions /etc/php-fpm.d/ && \
     fix-permissions /run/php-fpm && \
     fix-permissions /app && \
     fix-permissions /var/lib/php/session/
