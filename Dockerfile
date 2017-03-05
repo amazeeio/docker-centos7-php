@@ -34,9 +34,7 @@ RUN yum install -y epel-release \
     yum --enablerepo=epel install -y fcgi && \
     yum clean all 
 
-COPY container-entrypoint /usr/sbin/container-entrypoint
-
-RUN php -r "echo ini_get('memory_limit').PHP_EOL;"
+COPY container-entrypoint check_fcgi /usr/sbin/
 
 # Setup the Composer installer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer &&  \
