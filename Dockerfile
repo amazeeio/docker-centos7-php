@@ -52,4 +52,4 @@ EXPOSE 9000
 ENTRYPOINT ["container-entrypoint"]
 
 # Run PHP-FPM on container start.
-CMD ["/usr/sbin/php-fpm", "-F"]
+CMD ["/usr/sbin/php-fpm", "-F". "-R"]
