@@ -6,7 +6,7 @@ MAINTAINER amazee.io
 RUN yum install -y epel-release \
         http://rpms.remirepo.net/enterprise/remi-release-7.rpm  \
         yum-utils && \
-    yum-config-manager --enable remi-php71 && \
+    yum-config-manager --enable remi-php72 && \
     yum install -y \
         php-bcmath \
         php-cli \
