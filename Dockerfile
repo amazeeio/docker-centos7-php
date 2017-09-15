@@ -3,10 +3,10 @@ FROM amazeeio/centos:7
 MAINTAINER amazee.io
 
 # Install required repos, update, and then install PHP-FPM
-RUN yum install -y epel-release \ 
+RUN yum install -y epel-release \
         http://rpms.remirepo.net/enterprise/remi-release-7.rpm  \
         yum-utils && \
-    yum-config-manager --enable remi-php70 && \
+    yum-config-manager --enable remi-php71 && \
     yum install -y \
         php-bcmath \
         php-cli \
@@ -32,7 +32,7 @@ RUN yum install -y epel-release \
         php-pecl-redis \
         unzip && \
     yum --enablerepo=epel install -y fcgi && \
-    yum clean all 
+    yum clean all
 
 COPY container-entrypoint check_fcgi /usr/sbin/
 
